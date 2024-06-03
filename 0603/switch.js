@@ -51,5 +51,5 @@ function weekend() {
   // } else {
   //   return "평일입니다!";
   // }
- return day.includes('토')? '토요일' : day.includes('일')? '일요일' : '평일'
+ return day.includes('토')||day.includes('일')? alert(`${day} 주말입니다!`) : alert(`${day}요일 - 평일입니다!`)
 }
