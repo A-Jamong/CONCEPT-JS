@@ -17,8 +17,8 @@
 
 //함수는 하나의 기능만 수행하게 하자! 숫자 가져오는 거 따로 나눠주기! -- 개발 방법론 : Separation of concerns (관심사의 분리)
 
-function getRandom() {
-  const value = Math.floor(Math.random() * 7);
+function getRandom(n) {
+  const value = Math.floor(Math.random() * n);
   return value;
 }
 
