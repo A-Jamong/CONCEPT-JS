@@ -45,10 +45,11 @@ function getDay(value = getRandom(7)) {
 
 function weekend() {
   let day = getDay();
-  if (day === "토" || day === "일") {
-    //===대신 includes 써도 똑같음! day.includes('토')
-    return "주말입니다!";
-  } else {
-    return "평일입니다!";
-  }
+  // if (day === "토" || day === "일") {
+  //   //===대신 includes 써도 똑같음! day.includes('토')
+  //   return "주말입니다!";
+  // } else {
+  //   return "평일입니다!";
+  // }
+ return day.includes('토')? '토요일' : day.includes('일')? '일요일' : '평일'
 }
