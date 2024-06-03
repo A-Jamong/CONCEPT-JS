@@ -15,10 +15,14 @@
 // const number = +prompt("0~6까지의 숫자를 입력해주세용");
 //number -> 숫자로 만들어주기 : 앞에 + 해줘도 되고 parseInt 해줘도 되고.
 
+//함수는 하나의 기능만 수행하게 하자! 숫자 가져오는 거 따로 나눠주기! -- 개발 방법론 : Separation of concerns (관심사의 분리)
+
+function getRandom() {
+  const value = Math.floor(Math.random() * 7);
+  return value;
+}
+
 function getDay() {
-  /*const random_number = Math.random() * 6 + 1;
-  // math.random 은 소수점까지 출력해준다. -> math.floor 써도 된다.*/
-  const random_number = Math.floor(Math.random() * 7);
   console.log(random_number);
 
   switch (random_number) {
