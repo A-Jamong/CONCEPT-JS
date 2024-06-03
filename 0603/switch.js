@@ -22,37 +22,33 @@ function getRandom(n) {
   return value;
 }
 
-function getDay() {
-  console.log(random_number);
+function getDay(value = getRandom(7)) {
+  console.log(value);
+  switch (value) {
+    case 0:
+      return "일";
+    case 1:
+      return "월";
+    case 2:
+      return "화";
+    case 3:
+      return "수";
+    case 4:
+      return "목";
+    case 5:
+      return "금";
+    case 6:
+      return "토";
+  }
+  return value;
+}
 
-  switch (random_number) {
-    case 0: {
-      console.log(alert("일"));
-      break;
-    }
-    case 1: {
-      console.log(alert("월"));
-      break;
-    }
-    case 2: {
-      console.log(alert("화"));
-      break;
-    }
-    case 3: {
-      console.log(alert("수"));
-      break;
-    }
-    case 4: {
-      console.log(alert("목"));
-      break;
-    }
-    case 5: {
-      console.log(alert("금"));
-      break;
-    }
-    case 6: {
-      console.log(alert("토"));
-      break;
-    }
+function weekend() {
+  let day = getDay();
+  if (day === "토" || day === "일") {
+    //===대신 includes 써도 똑같음! day.includes('토')
+    return "주말입니다!";
+  } else {
+    return "평일입니다!";
   }
 }
