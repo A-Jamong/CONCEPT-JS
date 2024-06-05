@@ -18,12 +18,11 @@ Object.prototype.nickName = "호랑이";
 //Call -> 조상 아니더라도 쓸 수 있음. string 이 array의 능력을 쓰고 싶다던가. Array.prototype.forEach.call('hello', ()=>{})
 
 // console.log(Object.prototype.hasOwnProperty.call(javaScript, "creator"));
-Object.defineProperty(nickName){
-  enumerable: true;
-}
+
+Object.defineProperty(Object.prototype, "nickName", {
+  enumerable: false,
+});
 
 for (let key in javaScript) {
-  if (Object.prototype.hasOwnProperty.call(javaScript, key)) {
-    console.log(javaScript[key]);
-  }
+  console.log(javaScript[key]);
 }
