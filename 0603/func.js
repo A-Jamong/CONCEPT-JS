@@ -61,3 +61,10 @@ function setStyle(classname, changestyle, stylevalue) {
 }
 console.log(document.querySelector(".first").style);
 setStyle(".first", "color", "blue");
+
+let obj = {
+  name: "John",
+  age: 30,
+};
+
+console.log(obj._name); // "John"
