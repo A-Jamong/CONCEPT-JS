@@ -31,6 +31,8 @@
 // - contains
 
 /*-------------------------------- 실습 ------------------------------*/
+// getNode(".list", "#visual-section");
+
 //1. id가 visual-section인 section 태그 요소
 //const section = document.querySelector('#visual-section')
 let section = document.getElementById("visual-section");
@@ -44,8 +46,14 @@ const list = document.querySelector(".list");
 // const about = document.querySelector('.list > li:nth-child(2)');
 const about = list.querySelector("li:nth-child(2)");
 
+const liTag = [...list.children].find((li) => {
+  return li.textContent === "about"; // 안에 내용이 about인 태그 찾기
+});
+
+// const litag = [...list.children].find((li) => li.textContent === "about");
+
 //4. name 속성이 search-box인 form 태그 요소
-const form = document.querySelector('form[name = "search-box"]'); //속성 선택자
+const form = document.querySelector('form[name = "search-box"]'); //~ 속성 선택자
 
 //5. form 요소 안에 있는 모든 자식 요소
 // const children = form.children;
