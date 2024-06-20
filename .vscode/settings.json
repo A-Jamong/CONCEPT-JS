@@ -2,5 +2,8 @@
   "editor.tokenColorCustomizations": {
     "comments": "",
     "textMateRules": []
-  }
+  },
+  "workbench.activityBar.location": "default",
+  "workbench.sideBar.location": "left",
+  "workbench.view.alwaysShowHeaderActions": false
 }

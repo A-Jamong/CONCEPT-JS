@@ -1,14 +1,14 @@
 const aList = document.querySelectorAll("nav a");
 const depthList = document.querySelectorAll(".depth");
-const header = document.querySelector('#header');
+const header = document.querySelector("#header");
 
-const h = t => t.style.height = 0;
+const h = (t) => (t.style.height = 0);
 
 //* .forEach(e=>console.log(e)) -> .forEach(console.log) : 전달받은 인자 자체를 그대로 다른 함수에다가 넣겠다 하면 그냥 함수만 붙여서 쓸 수 있다.
 
 console.log(alert);
 
-aList.forEach((a) => {
+/*aList.forEach((a) => {
   a.addEventListener("mouseenter", () => {
     // console.log(a);
     // console.log(a.lastElementChild) //메뉴123 잡기!
@@ -22,4 +22,11 @@ aList.forEach((a) => {
   });
 });
 
-header.addEventListener('mouseleave', ()=>depthList.forEach(h))
+header.addEventListener('mouseleave', ()=>depthList.forEach(h))*/
+/* ------------------------------- gsap으로 만들기------------------------------- */
+aList.forEach((a) => {
+  const target = a.lastElementChild;
+  const tl = gsap.timeline({paused:true}).to(target, { height: 100 });
+  a.addEventListener("mouseenter", () => tl.play());
+  a.addEventListener("mouseleave", () => tl.reverse());
+});
