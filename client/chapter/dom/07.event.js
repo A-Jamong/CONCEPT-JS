@@ -146,7 +146,7 @@ throttle(() => {
 //   console.log(this);
 // }))
 ground.addEventListener('mousemove', throttle(handleMove))
-
+addClass('.ground', 'a,b,c')
 
 /*------------------ 지우기 버튼 -----------------*/
 
