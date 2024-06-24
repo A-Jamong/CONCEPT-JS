@@ -3,7 +3,7 @@
     "comments": "",
     "textMateRules": []
   },
-  "workbench.activityBar.location": "default",
+  "workbench.activityBar.location": "top",
   "workbench.sideBar.location": "left",
   "workbench.view.alwaysShowHeaderActions": false
 }
