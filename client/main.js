@@ -1,74 +1,75 @@
 import {
-  getNode,
-  getRandom,
-  insertLast,
+  attr,
   clearContents,
-  addClass,
-  removeClass,
-  showAlert,
-  isString,
-  isNumbericString,
-  shake,
-  copy,
+  diceAnimation,
+  endScroll,
+  getNode,
+  getNodes,
+  insertLast,
 } from "./lib/index.js";
-import data from "./data/data.js";
-// import clearContents from "./lib/dom/clearContents.js";
 
-// console.log(data);
+// 1. 주사위 애니메이션
+// 2. 주사위 굴리기 버튼 클릭하면 diceAnimation() 실행되게
 
-const submit = getNode("#submit");
-const result = getNode(".result");
-function handleSubmit(e) {
-  e.preventDefault();
+const [rollingButton, recordButton, resetButton] = getNodes(
+  ".buttonGroup > button"
+);
+const recordListWrapper = getNode(".recordListWrapper");
 
-  const name = nameField.value;
-  const list = data(name);
-  const pick = list[getRandom(list.length)];
-  if (!name || name.replace(/\s*/g, "") === "") {
-    showAlert(".alert-error", "공백은 허용하지 않습니다.");
-    removeClass('#nameField', 'shake');
-
-    shake('#nameField').restart();
-    // addClass('#nameField', 'shake'); 
-    //~ ^ removeClass 하면 되는데 동일선상에 있으면 제거되자마자 들어가는 거라서 시간차를 줘야된다.근데 timeout은 시간 보장은 못줌!! 그래서 shake.js 만드는중
-
-    // gsap.fromto('#nameField', {
-    //   duration:0.1,
-    //   x:-10,
-    //   repeat:5,
-    //   yoyo:true,
-    //   clearProps:'transform'
-    // })
-    return;
-  }
-
-  if(!isNumbericString(name)){
-    showAlert('.alert-error', '제대로된 이름을 입력해 주세요.')
-  }
-
-  // if(!name||name.replace(/\s*/g,'')===''){ //모듈로~
-  //   addClass('.alert-error', 'is-active');
-  //   setTimeout(() => {
-  //     removeClass('.alert-error', 'is-active');
-  //   }, 2000); //~ 시간 보장을 못 해주니까 좋지 않다. 프로미스로 바꾸거나 gsap애니메이션을 사용한다.
-  //   console.log('이름을 입력해주세요');
-  //   return;
-  // }
-
-  clearContents(result);
-  // result.textContent = pick; 이렇게 해두 됨!
-  insertLast(result, pick);
-
-  // console.log(pick);
+let count = 0;
+let totalValue = 0;
+function createItem(value) {
+  const template = `
+  <tr>
+    <td>${++count}</td>
+    <td>${value}</td>
+    <td>${(totalValue += value)}</td>
+  </tr>
+  `;
+  return template;
 }
 
-function handleCopy(){
-  const text = result.textContent;
-  copy(text).then(()=>{
-    showAlert('.alert-success', '클립보드 복사 완료!')
-  });
-  // showAlert('.alert-success','클립보드 복사 완료!')
+function renderRecordItem() {
+  // const diceValue = getNode('#cube').getAttribute('dice')
+  const diceValue = +attr(getNode("#cube"), "dice");
+
+  insertLast(getNode(".recordList tbody"), createItem(diceValue)); //element.insertAdjustHTML
+
+  endScroll(recordListWrapper);
 }
 
-submit.addEventListener("click", handleSubmit);
-result.addEventListener("click", handleCopy);
+const handleRollingDice = (() => {
+  let isClicked = false;
+  let stopAnimation;
+
+  return () => {
+    if (!isClicked) {
+      stopAnimation = setInterval(diceAnimation, 300);
+      //! let stopAnimation = setInterval(diceAnimation,100) 하면 아이디 반환해주는 줄 알았는데 블록스코프라서 clear까지 넘어가지 못 한다!
+      recordButton.disabled = true;
+      resetButton.disabled = true;
+    } else {
+      clearInterval(stopAnimation);
+      recordButton.disabled = false;
+      resetButton.disabled = false;
+    }
+
+    isClicked = !isClicked;
+  };
+})();
+
+function handleRecord() {
+  recordListWrapper.hidden = false;
+
+  renderRecordItem();
+}
+function handleReset() {
+  recordListWrapper.hidden = true;
+  clearContents('tbody');
+  count = 0;
+  total = 0;
+}
+
+rollingButton.addEventListener("click", handleRollingDice);
+recordButton.addEventListener("click", handleRecord);
+resetButton.addEventListener("click", handleReset);
