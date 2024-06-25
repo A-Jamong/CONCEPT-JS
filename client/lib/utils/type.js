@@ -12,5 +12,7 @@ export const isFunction = data => typeOf(data) === 'function'
 export const isMath = data => typeOf(data) === 'math'
 export const isString = data => typeOf(data) === 'string'
 export const isUndefined = data => typeOf(data) === 'undefined'
-
+export function isNumbericString(data){
+  return isNaN(Number(data))
+}
 
