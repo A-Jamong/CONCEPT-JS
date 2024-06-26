@@ -123,8 +123,6 @@ xhr.post = (url, body, onsuceess, onfail) => {
 /*                  xhr 프로미스 방식                 */
 /* -------------------------------------------- */
 
-// xhr.post(ENDPOINT).then().then();
-
 xhr.put = (url, body, onsuceess, onfail) => {
   xhr({
     method: "PUT",
@@ -144,4 +142,24 @@ xhr.delete = (url, onsuceess, onfail) => {
   });
 };
 
-console.dir(xhr);
+function xhrPromise(method, url, body) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.open(method, url);
+
+  xhr.send(JSON.stringify(body));
+
+  new Promise((resolve, reject) => {
+    xhr.addEventListener("readystatechange", () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          //성공
+        } else {
+          //실패
+        }
+      }
+    });
+  });
+}
+
+xhrPromise("GET", ENDPOINT, { namd: "tiger" });
