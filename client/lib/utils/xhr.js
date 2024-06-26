@@ -73,17 +73,17 @@ function xhr({
 //   (err) => console.log(err)
 // );
 
-xhr({
-  method: "POST",
-  url: ENDPOINT,
-  body: user,
-  onsuceess(data) {
-    console.log(data);
-  },
-  onfail(err) {
-    console.log(err);
-  },
-});
+// xhr({
+//   method: "POST",
+//   url: ENDPOINT,
+//   body: user,
+//   onsuceess(data) {
+//     console.log(data);
+//   },
+//   onfail(err) {
+//     console.log(err);
+//   },
+// });
 
 /* -------------------------------------------- */
 /* ------------------ 썜꺼 훔쳐옴 ------------------ */
@@ -119,10 +119,6 @@ xhr.post = (url, body, onsuceess, onfail) => {
   });
 };
 
-/* -------------------------------------------- */
-/*                  xhr 프로미스 방식                 */
-/* -------------------------------------------- */
-
 xhr.put = (url, body, onsuceess, onfail) => {
   xhr({
     method: "PUT",
@@ -142,24 +138,54 @@ xhr.delete = (url, onsuceess, onfail) => {
   });
 };
 
-function xhrPromise(method, url, body) {
+/* -------------------------------------------- */
+/*                  xhr 프로미스 방식                 */
+/* -------------------------------------------- */
+
+const defaultOptions = {
+  method: "GET",
+  url: "",
+  body: null,
+  errorMessage: "서버와의 통신이 원활하지 않습니다.",
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
+};
+
+export function xhrPromise(options) {
+  const config = { ...defaultOptions, ...options };
+
+  const { method, url, body, headers, errorMessage } = config;
+
   const xhr = new XMLHttpRequest();
 
   xhr.open(method, url);
 
+  Object.entries(headers).forEach(([key, value]) => {
+    xhr.setRequestHeader(key, value);
+  });
+
   xhr.send(JSON.stringify(body));
 
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     xhr.addEventListener("readystatechange", () => {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 400) {
-          //성공
+          resolve(JSON.parse(xhr.response));
         } else {
-          //실패
+          reject({ message: errorMessage });
         }
       }
     });
   });
 }
 
-xhrPromise("GET", ENDPOINT, { namd: "tiger" });
+// xhrPromise.get = (url) => {
+//   xhrPromise({ url });
+// };
+
+xhrPromise.get = (url) => xhrPromise({ url });
+xhrPromise.post = (url, body) => xhrPromise({ url, body, method: "POST" });
+xhrPromise.put = (url, body) => xhrPromise({ url, body, method: "PUT" });
+xhrPromise.delete = (url) => xhrPromise({ url, method: "DELETE" });
