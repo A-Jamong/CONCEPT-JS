@@ -42,25 +42,22 @@ const jjam = async () => {
 /* ------------------------⬇️⬇️⬇️------------------- */
 
 const defaultOptions = {
-  method:'GET',
-  body:null,
-  headers:{
-    'Content-Type':'application/json',
-    'Access-Control-Allow-Origin':'*'
-  }
-}
+  method: "GET",
+  body: null,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
+};
 export const jjam = async (options) => {
   // const config = { //~ config 를 쓰거나 하지는 않으니까 구조분해할당
   const { url, ...restOptions } = {
     ...defaultOptions,
     ...options,
+
     headers: {
-      ...defaultOptions,
-      ...options,
-      headers: {
-        ...defaultOptions.headers,
-        ...options.headers,
-      },
+      ...defaultOptions.headers,
+      ...options.headers,
     },
   };
 
@@ -96,6 +93,7 @@ jjam.get = (url, options) => {
 
 jjam.post = (url, body, options) => {
   return jjam({
+    method: "POST",
     url,
     ...options,
     body: JSON.stringify(body),
@@ -104,6 +102,7 @@ jjam.post = (url, body, options) => {
 
 jjam.delete = (url, options) => {
   return jjam({
+    method: "DELETE",
     url,
     ...options,
   });

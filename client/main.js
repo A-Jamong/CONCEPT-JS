@@ -1,5 +1,12 @@
 /* global gsap  */
-import { changeColor, jjam, getNode,delayP, renderEmptyCard, clearContents } from "./lib/index.js";
+import {
+  changeColor,
+  jjam,
+  getNode,
+  delayP,
+  renderEmptyCard,
+  clearContents,
+} from "./lib/index.js";
 import { renderUserCard, renderSpinner } from "./lib/index.js";
 const ENDPOINT = "http://localhost:3000/users";
 
@@ -16,20 +23,19 @@ const ENDPOINT = "http://localhost:3000/users";
 const userCardInner = getNode(".user-card-inner");
 
 async function renderUserLIst() {
-
   /* ---------------- 로딩스피렌더링 --------------- */
 
-  renderSpinner(userCardInner)
+  renderSpinner(userCardInner);
   // await delayP(2000)
 
   try {
-    gsap.to('.loadingSpinner',{
-      opacity:0,
-      onComplete(){
-        getNode('.loadingSpinner').remove()
-        console.log('end');
-      }
-    })
+    gsap.to(".loadingSpinner", {
+      opacity: 0,
+      onComplete() {
+        getNode(".loadingSpinner").remove();
+        console.log("end");
+      },
+    });
     const response = await jjam.get(ENDPOINT);
     const data = response.data;
     data.forEach((user) => {
@@ -45,7 +51,7 @@ async function renderUserLIst() {
       },
     });
   } catch {
-    renderEmptyCard(userCardInner)
+    renderEmptyCard(userCardInner);
     throw console.error("에러 발생~");
   }
 }
@@ -67,19 +73,61 @@ const getData = async () => {
 };
 */
 
-
-function handleDeleteCard(e){
-  const button = e.target.closest('button');
-  if(!button) return;
+function handleDeleteCard(e) {
+  const button = e.target.closest("button");
+  if (!button) return;
   //⬇️ 이게 먹히긴 먹히는데 가짜 데이터라서 진짜 없어지게 보이지는 않는다.
   // jjam.delete(`${ENDPOINT}/1`);
   //⬇️ data-index:'user-1' 갖고 있는 걸 지워주자
-  const article = button.closest('article');
+  const article = button.closest("article");
   const index = article.dataset.index.slice(5);
-  jjam.delete(`${ENDPOINT}/${index}`)
-  .then(()=>{
-    clearContents(userCardInner)
-    renderUserLIst()
+  jjam.delete(`${ENDPOINT}/${index}`).then(() => {
+    clearContents(userCardInner);
+    renderUserLIst();
+  });
+}
+userCardInner.addEventListener("click", handleDeleteCard);
+
+const createButton = getNode(".create");
+const cancleButoon = getNode(".cancel");
+const doneButoon = getNode(".done");
+
+function handleCreate() {
+  gsap.to(".pop", { autoAlpha: 1 });
+}
+// const cancle = document.querySelector('.create')
+function handleCancle(e) {
+  // 취소를 누르면 그걸 갖고있는 create 까지 눌리는 거라서 위에 create 이벤트가 같이 실행되기 때문에 안 없어지는 것
+  // 그래서 버블링은 멈추게 해주는 게 필요하다! 이벤트 타겟 이상으로 버블링이 되지 않게.
+  e.stopPropagation();
+  gsap.to(".pop", { autoAlpha: 0 });
+}
+
+function handleDone(e) {
+  e.preventDefault();
+
+  const name = getNode("#nameField").value;
+  const email = getNode("#emailField").value;
+  const website = getNode("#siteField").value;
+
+  console.log(name, email, website);
+  jjam.post(ENDPOINT, {
+    name,
+    email,
+    website
+  }).then(()=>{
+    // 1. 팝업 닫기
+    // gsap.to('.pop',{autoAlpha:0})
+    createButton.classList.remove('open');
+
+    // 2. 카드 컨텐츠 비우기
+    clearContents(userCardInner);
+
+    // 3. 유저카드 렌더링하기
+    renderUserLIst();
   })
 }
-userCardInner.addEventListener('click', handleDeleteCard)
+
+createButton.addEventListener("click", handleCreate);
+cancleButoon.addEventListener("click", handleCancle);
+doneButoon.addEventListener("click", handleDone);
