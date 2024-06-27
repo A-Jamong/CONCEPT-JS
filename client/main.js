@@ -1,7 +1,7 @@
 /* global gsap  */
-import { changeColor, jjam, getNode,delayP, renderEmptyCard } from "./lib/index.js";
+import { changeColor, jjam, getNode,delayP, renderEmptyCard, clearContents } from "./lib/index.js";
 import { renderUserCard, renderSpinner } from "./lib/index.js";
-const ENDPOINT = "https://jsonplaceholder.typicode.com/users";
+const ENDPOINT = "http://localhost:3000/users";
 
 // const response = await jjam.get(ENDPOINT);
 // console.log(response.data)
@@ -77,5 +77,9 @@ function handleDeleteCard(e){
   const article = button.closest('article');
   const index = article.dataset.index.slice(5);
   jjam.delete(`${ENDPOINT}/${index}`)
+  .then(()=>{
+    clearContents(userCardInner)
+    renderUserLIst()
+  })
 }
 userCardInner.addEventListener('click', handleDeleteCard)
