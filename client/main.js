@@ -1,39 +1,14 @@
-/*class MyElement extends HTMLElement{
-  
-  constructor(){
-    super();
-  }
+const template = document.createElement("template");
 
-  connectedCallback(){
-    console.log('탄생함')
-  }
-  disconnectedCallback(){
-    console.log('죽음!');
-  }
-}
+template.innerHTML = `
+  <div>bye</div>
+  <div>javascript</div>
+`;
 
-customElements.define('c-element', MyElement);
+const app = document.querySelector("#app");
+const temp = document.querySelector("#temp");
 
-const elem = document.createElement('c-element');
-const app = document.getElementById('app');
+const clone = temp.content.cloneNode(true);
+// temp.content 가 훼손되면 전부 훼손되니까 한번 깔끔하게 클론해서 쓰는 게 낫다.
 
-app.appendChild(elem)
-*/
-class Button extends HTMLElement {
-  constructor() {
-    super();
-    // c-button의 섀도우 돔을 열어줘.
-    this.attachShadow({ mode: "open" });
-
-    // 그리고 그 안에 내가 원하는 태그 집어넣을거야
-    this.shadowRoot.innerHTML =`
-      <button>hello</button>
-    `
-  }
-  connetedCallback() {}
-  disconnetedCallback() {}
-} 
-
-customElements.define("c-button", Button);
-console.log(document.querySelector('button'));
-console.log(document.querySelector('c-button').shadowRoot.querySelector('button'));
+app.appendChild(clone);
