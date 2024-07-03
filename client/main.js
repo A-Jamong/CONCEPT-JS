@@ -19,38 +19,21 @@ const app = document.getElementById('app');
 
 app.appendChild(elem)
 */
-class Button extends HTMLElement{
-  constructor(){
+class Button extends HTMLElement {
+  constructor() {
     super();
-    this.button = document.querySelector('button');
+    // c-button의 섀도우 돔을 열어줘.
+    this.attachShadow({ mode: "open" });
+
+    // 그리고 그 안에 내가 원하는 태그 집어넣을거야
+    this.shadowRoot.innerHTML =`
+      <button>hello</button>
+    `
   }
-  connetedCallback(){
-    this._render();
+  connetedCallback() {}
+  disconnetedCallback() {}
+} 
 
-  }
-  disconnetedCallback(){
-
-  }
-  static get observedAttributes(){
-    return ['id'];
-  }
-
-  attributeChangedCallback(name,oldValue,newValue){
-    if(oldValue!==newValue){
-      this._render()
-    }
-  }
-  _render(){
-    this.button.textContent = this.id;
-  }
-}
-
-customElements.define('c-button', Button); // c-button 은 new Button 을 통해 생성된 객체랑 같다!
-
-const c = document.querySelector('c-button');
-
-let count = 0;
-
-c.addEventListener('click', ()=>{
-  c.setAttribute('id', ++count)
-})
+customElements.define("c-button", Button);
+console.log(document.querySelector('button'));
+console.log(document.querySelector('c-button').shadowRoot.querySelector('button'));
