@@ -13,25 +13,12 @@
   </head>
   <body>
     <div id="app">
-      <!-- <c-button id="10">
-        <button>100</button>
-      </c-button> 웹 컴포넌트 connectedCallback 실습-->
-      <!-- <input type="range" name="" id="" /> 섀도우 돔 실습 -->
-      <c-button></c-button>
-    </div>
 
-    <template id="temp"> 
-      <!-- ^ 얘는 렌더링되지 않는다!!  -->
-      <style>
-        div{
-          background-color: red;
-        }
-      </style>
-      <div>hello</div>
-      <div>javascript</div>
-      <script>
-        // alert('템플릿 로드')
-      </script>
-    </template>
+      <user-card>
+        <div slot="username">name : jam</div>
+        <div>age : hello</div>
+      </user-card>
+
+    </div>
   </body>
 </html>

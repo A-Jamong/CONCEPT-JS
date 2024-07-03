@@ -1,14 +1,14 @@
-const template = document.createElement("template");
 
-template.innerHTML = `
-  <div>bye</div>
-  <div>javascript</div>
-`;
+class UserCard extends HTMLElement{
+  constructor(){
+    super();
+    this.attachShadow({mode:'open'});
+    this.shadowRoot.innerHTML = `
+    <div> nickName : kind-tiger </div>
+    <slot name="username">hello</slot>
+    <slot name="email">any@naver.com</slot>
+    `
+  }
+}
 
-const app = document.querySelector("#app");
-const temp = document.querySelector("#temp");
-
-const clone = temp.content.cloneNode(true);
-// temp.content 가 훼손되면 전부 훼손되니까 한번 깔끔하게 클론해서 쓰는 게 낫다.
-
-app.appendChild(clone);
+customElements.define('user-card', UserCard)
