@@ -1,31 +1,56 @@
-import { getNode, setStorage, getStorage, deleteStorage, clearContents } from "./lib/index.js";
+/*class MyElement extends HTMLElement{
+  
+  constructor(){
+    super();
+  }
 
-const textFiled = getNode('#textField');
-const textFiled2 = getNode('#textField2');
-const clear = getNode('button[data-name="clear"]');
+  connectedCallback(){
+    console.log('탄생함')
+  }
+  disconnectedCallback(){
+    console.log('죽음!');
+  }
+}
 
-getStorage('text').then((res)=>{
-  textFiled.value = res;
+customElements.define('c-element', MyElement);
+
+const elem = document.createElement('c-element');
+const app = document.getElementById('app');
+
+app.appendChild(elem)
+*/
+class Button extends HTMLElement{
+  constructor(){
+    super();
+    this.button = document.querySelector('button');
+  }
+  connetedCallback(){
+    this._render();
+
+  }
+  disconnetedCallback(){
+
+  }
+  static get observedAttributes(){
+    return ['id'];
+  }
+
+  attributeChangedCallback(name,oldValue,newValue){
+    if(oldValue!==newValue){
+      this._render()
+    }
+  }
+  _render(){
+    this.button.textContent = this.id;
+  }
+}
+
+customElements.define('c-button', Button); // c-button 은 new Button 을 통해 생성된 객체랑 같다!
+
+const c = document.querySelector('c-button');
+
+let count = 0;
+
+c.addEventListener('click', ()=>{
+  c.setAttribute('id', ++count)
 })
-getStorage('text1').then((res)=>{
-  textFiled2.value = res;
-})
-
-function handleTextField(){
-  const value = this.value;
-  setStorage('text', value);
-}
-function handleTextField2(){
-  const value = this.value;
-  setStorage('text', value);
-}
-function handClear(){
-  deleteStorage('text3')
-  clearContents(textFiled)
-}
-
-textFiled.addEventListener('input', handleTextField);
-textFiled2.addEventListener('input',handleTextField2);
-
-// clear.addEventListener('click', handClear)
-clear.addEventListener('click', handClear)
